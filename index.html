@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <link rel="icon" type="image/x-icon" href="https://bravolog.com.br/wp-content/uploads/2021/11/favicon.svg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Remover Espaços e Caracteres Especiais</title>
@@ -43,17 +44,29 @@
       z-index: 1;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    button {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #f44336;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #d32f2f;
     }
 
     .output {
-      font-size: 0.8em;
+      font-size: 1.2em;
       color: #333;
       word-wrap: break-word;
     }
@@ -106,8 +119,11 @@
 <body>
   <div class="background"></div>
   <div class="container">
-    <h1>Remover Espaços e Caracteres Especiais</h1>
-    <input type="text" id="inputText" placeholder="Digite seu texto aqui">
+    <h1>Remove Espaços e Caracteres Especiais</h1>
+    <div class="input-group">
+      <input type="text" class="inputText" placeholder="Digite seu texto aqui">
+      <button type="button" class="clearButton">Limpar</button>
+    </div>
     <div class="output" id="outputText"></div>
     <div class="copied" id="copiedMessage">Texto copiado para a área de transferência!</div>
     <div class="info-container" id="infoContainer">
@@ -133,13 +149,29 @@
   <div class="footer">Desenvolvido por: Maicon Santos</div>
 
   <script>
-    document.getElementById('inputText').addEventListener('input', function () {
-      let input = this.value;
-      let output = input.replace(/[ .,-/]/g, '');
+    document.querySelector('.clearButton').addEventListener('click', function () {
+      let input = document.querySelector('.inputText');
+      input.value = '';
+      handleInput({ target: input });
+    });
+
+    document.querySelector('.inputText').addEventListener('input', handleInput);
+
+    function handleInput(event) {
+      let input = event.target;
+      let output = input.value.replace(/[ .,-/]/g, '');
       document.getElementById('outputText').textContent = output;
 
-      let infoContainer = document.getElementById('infoContainer');
       let infoTitle = document.getElementById('infoTitle');
+      let infoLabel1 = document.getElementById('infoLabel1');
+      let info1 = document.getElementById('info1');
+      let infoLabel2 = document.getElementById('infoLabel2');
+      let info2 = document.getElementById('info2');
+      let infoLabel3 = document.getElementById('infoLabel3');
+      let info3 = document.getElementById('info3');
+      let infoLabel4 = document.getElementById('infoLabel4');
+      let info4 = document.getElementById('info4');
+
       if (output) {
         navigator.clipboard.writeText(output).then(function () {
           let copiedMessage = document.getElementById('copiedMessage');
@@ -149,20 +181,18 @@
           }, 2000);
         });
 
-        infoContainer.style.display = 'block';
-
         if (output.length === 44) {
           // Exibir dados da nota fiscal
           infoTitle.textContent = 'Dados da Nota Fiscal';
           let numeroNota = output.substring(25, 34).replace(/^0+/, '');
-          document.getElementById('infoLabel1').textContent = 'Número da Nota:';
-          document.getElementById('info1').textContent = numeroNota;
-          document.getElementById('infoLabel2').textContent = 'Série:';
-          document.getElementById('info2').textContent = output.substring(22, 25);
-          document.getElementById('infoLabel3').textContent = 'CNPJ do Emitente:';
-          document.getElementById('info3').textContent = output.substring(6, 20);
-          document.getElementById('infoLabel4').textContent = '';
-          document.getElementById('info4').textContent = '';
+          infoLabel1.textContent = 'Número da Nota:';
+          info1.textContent = numeroNota;
+          infoLabel2.textContent = 'Série:';
+          info2.textContent = output.substring(22, 25);
+          infoLabel3.textContent = 'CNPJ do Emitente:';
+          info3.textContent = output.substring(6, 20);
+          infoLabel4.textContent = '';
+          info4.textContent = '';
         } else if (output.length === 47 || output.length === 48) {
           // Exibir dados do boleto
           infoTitle.textContent = 'Dados do Boleto';
@@ -170,47 +200,46 @@
           let factor = parseInt(output.substring(33, 37)); // Fator de vencimento
           let dueDate = new Date(baseDate.getTime() + (factor * 24 * 60 * 60 * 1000));
           let formattedDate = dueDate.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-          document.getElementById('infoLabel1').textContent = 'Data de Vencimento:';
-          document.getElementById('info1').textContent = formattedDate;
+          infoLabel1.textContent = 'Data de Vencimento:';
+          info1.textContent = formattedDate;
 
           let today = new Date();
           let timeDiff = dueDate.getTime() - today.getTime();
           let daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-          document.getElementById('infoLabel2').textContent = 'Dias restantes:';
-          document.getElementById('info2').textContent = daysLeft;
+          infoLabel2.textContent = 'Dias restantes:';
+          info2.textContent = daysLeft;
 
           let value = parseFloat(output.substring(37, 47)) / 100;
-          document.getElementById('infoLabel3').textContent = 'Valor do Boleto:';
-          document.getElementById('info3').textContent = value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+          infoLabel3.textContent = 'Valor do Boleto:';
+          info3.textContent = value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
           // Limpar campos adicionais
-          document.getElementById('infoLabel4').textContent = '';
-          document.getElementById('info4').textContent = '';
+          infoLabel4.textContent = '';
+          info4.textContent = '';
         } else {
           // Exibir mensagem de processo concluído
           infoTitle.textContent = 'Processo Concluído';
-          document.getElementById('infoLabel1').textContent = '';
-          document.getElementById('info1').textContent = '';
-          document.getElementById('infoLabel2').textContent = '';
-          document.getElementById('info2').textContent = '';
-          document.getElementById('infoLabel3').textContent = '';
-          document.getElementById('info3').textContent = '';
-          document.getElementById('infoLabel4').textContent = '';
-          document.getElementById('info4').textContent = '';
+          infoLabel1.textContent = '';
+          info1.textContent = '';
+          infoLabel2.textContent = '';
+          info2.textContent = '';
+          infoLabel3.textContent = '';
+          info3.textContent = '';
+          infoLabel4.textContent = '';
+          info4.textContent = '';
         }
       } else {
-        infoContainer.style.display = 'block';
         infoTitle.textContent = '';
-        document.getElementById('infoLabel1').textContent = '';
-        document.getElementById('info1').textContent = '';
-        document.getElementById('infoLabel2').textContent = '';
-        document.getElementById('info2').textContent = '';
-        document.getElementById('infoLabel3').textContent = '';
-        document.getElementById('info3').textContent = '';
-        document.getElementById('infoLabel4').textContent = '';
-        document.getElementById('info4').textContent = '';
+        infoLabel1.textContent = '';
+        info1.textContent = '';
+        infoLabel2.textContent = '';
+        info2.textContent = '';
+        infoLabel3.textContent = '';
+        info3.textContent = '';
+        infoLabel4.textContent = '';
+        info4.textContent = '';
       }
-    });
+    }
   </script>
 </body>
 </html>
