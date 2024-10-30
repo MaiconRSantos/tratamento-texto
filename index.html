@@ -4,7 +4,7 @@
   <link rel="icon" type="image/x-icon" href="https://bravolog.com.br/wp-content/uploads/2021/11/favicon.svg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Remover Espaços e Caracteres Especiais</title>
+  <title>Removedor de Espaços e Caracteres Especiais</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -39,9 +39,13 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       text-align: center;
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
       position: relative;
       z-index: 1;
+    }
+
+    .container h1 {
+      font-size: 1.5rem;
     }
 
     input[type="text"],
@@ -66,7 +70,7 @@
     }
 
     .output {
-      font-size: 1.2em;
+      font-size: 0.8em;
       color: #333;
       word-wrap: break-word;
     }
@@ -111,8 +115,34 @@
       bottom: 10px;
       right: 10px;
       font-size: 0.8em;
-      color: #666;
+      color: #c5c4c4;
       font-family: 'Courier New', Courier, monospace;
+    }
+
+    .notes-container {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fffbe0;
+      text-align: left;
+    }
+
+    .notes-container h2 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 1em;
+      color: #666;
+    }
+
+    .notes-container textarea {
+      width: 100%;
+      height: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1em;
     }
   </style>
 </head>
@@ -144,6 +174,10 @@
         <span class="info-label" id="infoLabel4"></span>
         <span class="info" id="info4"></span>
       </div>
+    </div>
+    <div class="notes-container">
+      <h2>Bloco de Anotações</h2>
+      <textarea placeholder="Escreva suas anotações aqui..."></textarea>
     </div>
   </div>
   <div class="footer">Desenvolvido por: Maicon Santos</div>
