@@ -232,7 +232,7 @@
           infoTitle.textContent = 'Dados do Boleto';
           let baseDate = new Date(1997, 9, 7); // Data base para cálculo
           let factor = parseInt(output.substring(33, 37)); // Fator de vencimento
-          let dueDate = new Date(baseDate.getTime() + (factor * 24 * 60 * 60 * 1000));
+          let dueDate = new Date(baseDate.getTime() + ((factor + 1) * 24 * 60 * 60 * 1000));
           let formattedDate = dueDate.toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' });
           infoLabel1.textContent = 'Data de Vencimento:';
           info1.textContent = formattedDate;
